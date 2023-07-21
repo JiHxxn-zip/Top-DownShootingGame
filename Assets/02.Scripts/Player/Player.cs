@@ -1,6 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerController))]
+[RequireComponent(typeof(GunController))]
 public class Player : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5;
@@ -9,10 +10,13 @@ public class Player : MonoBehaviour
 
     private Camera viewCamera;
 
+    private GunController gunController; 
+
 
     void Start()
     {
         controller = GetComponent<PlayerController>();
+        gunController = GetComponent<GunController>();
         viewCamera = Camera.main;
     }
 
@@ -21,7 +25,7 @@ public class Player : MonoBehaviour
         Vector3 moveInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
         Vector3 moveVelocity = moveInput.normalized * moveSpeed;
 
-        // 만들어진 moveVelocity를 PlayerController에 전달해서 물리적인 부분들을 처리한다.\
+        // 만들어진 moveVelocity를 PlayerController에 전달해서 물리적인 부분들을 처리한다.
         controller.Move(moveVelocity);
 
         // 화면상에서 마우스의 위치를 반환해줌
@@ -39,6 +43,12 @@ public class Player : MonoBehaviour
             //Debug.DrawLine(ray.origin, point, Color.red);
 
             controller.LookAt(point);
+        }
+
+        //
+        if (Input.GetMouseButton(0))
+        {
+            gunController.Shoot();
         }
     }
 }
