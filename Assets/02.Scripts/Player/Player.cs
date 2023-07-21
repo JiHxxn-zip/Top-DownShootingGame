@@ -2,7 +2,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(PlayerController))]
 [RequireComponent(typeof(GunController))]
-public class Player : MonoBehaviour
+public class Player : LivingEntity
 {
     [SerializeField] private float moveSpeed = 5;
 
@@ -10,11 +10,13 @@ public class Player : MonoBehaviour
 
     private Camera viewCamera;
 
-    private GunController gunController; 
+    private GunController gunController;
 
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
+
         controller = GetComponent<PlayerController>();
         gunController = GetComponent<GunController>();
         viewCamera = Camera.main;
