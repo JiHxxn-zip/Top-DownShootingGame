@@ -3,4 +3,5 @@ using UnityEngine;
 public interface IDamageable
 {
     void TakeHit(float damage, RaycastHit git);
+    void TakeDamage(float damage);
 }
