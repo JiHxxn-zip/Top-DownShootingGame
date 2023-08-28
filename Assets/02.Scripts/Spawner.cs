@@ -42,6 +42,9 @@ public class Spawner : MonoBehaviour
     // 플레이어가 죽었을 경우 비활성화
     private bool isDisabled;
 
+    // 새 웨이브가 시작될 때 알려줄 이벤트
+    public event Action<int> OnNewWave;
+
 
     private void Start()
     {
@@ -123,11 +126,14 @@ public class Spawner : MonoBehaviour
         }
     }
 
+    private void ResetPlayerPosition()
+    {
+        playerT.position = map.GetTileFromPosition(Vector3.zero).position + Vector3.up * 3;
+    }
+
     private void NextWave()
     {
         currentWaveNumver++;
-
-        Debug.Log("Wave : " + currentWaveNumver);
 
         if(currentWaveNumver -1 < waves.Length)
         {
@@ -135,6 +141,12 @@ public class Spawner : MonoBehaviour
 
             enemyiesRemainingToSpawn = currentWaves.enemyCount;
             enemiesRemaningAlive = enemyiesRemainingToSpawn;
+
+            if(OnNewWave != null)
+            {
+                OnNewWave(currentWaveNumver);
+            }
+            ResetPlayerPosition();
         }
 
     }

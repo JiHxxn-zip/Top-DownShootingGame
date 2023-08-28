@@ -27,16 +27,16 @@ public class Player : LivingEntity
         Vector3 moveInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
         Vector3 moveVelocity = moveInput.normalized * moveSpeed;
 
-        // ¸¸µé¾îÁø moveVelocity¸¦ PlayerController¿¡ Àü´ŞÇØ¼­ ¹°¸®ÀûÀÎ ºÎºĞµéÀ» Ã³¸®ÇÑ´Ù.
+        // ë§Œë“¤ì–´ì§„ moveVelocityë¥¼ PlayerControllerì— ì „ë‹¬í•´ì„œ ë¬¼ë¦¬ì ì¸ ë¶€ë¶„ë“¤ì„ ì²˜ë¦¬í•œë‹¤.
         controller.Move(moveVelocity);
 
-        // È­¸é»ó¿¡¼­ ¸¶¿ì½ºÀÇ À§Ä¡¸¦ ¹İÈ¯ÇØÁÜ
+        // í™”ë©´ìƒì—ì„œ ë§ˆìš°ìŠ¤ì˜ ìœ„ì¹˜ë¥¼ ë°˜í™˜í•´ì¤Œ
         Ray ray = viewCamera.ScreenPointToRay(Input.mousePosition);
 
-        // ÄÚµå»óÀ¸·Î PlainÀ» »ı¼º ÈÄ ¹ı¼± º¤ÅÍ¸¦ ³ÖÀ½(ÇÃ·¹ÀÎÀÇ ¼öÁ÷À¸ Åë°úÇÔ)
+        // ì½”ë“œìƒìœ¼ë¡œ Plainì„ ìƒì„± í›„ ë²•ì„  ë²¡í„°ë¥¼ ë„£ìŒ(í”Œë ˆì¸ì˜ ìˆ˜ì§ìœ¼ í†µê³¼í•¨)
         Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
 
-        // Ä«¸Ş¶ó¿¡¼­ ray°¡ Ãæµ¹ÇÑ ÁöÁ¡±îÁöÀÇ °Å¸®
+        // ì¹´ë©”ë¼ì—ì„œ rayê°€ ì¶©ëŒí•œ ì§€ì ê¹Œì§€ì˜ ê±°ë¦¬
         float rayDistance;
 
         if (groundPlane.Raycast(ray, out rayDistance))
