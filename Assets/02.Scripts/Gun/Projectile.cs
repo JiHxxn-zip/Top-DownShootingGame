@@ -20,10 +20,10 @@ public class Projectile : MonoBehaviour
 
         Collider[] initialCollisions = Physics.OverlapSphere(transform.position, 1f, collisionMask);
 
-        // ÃÑ¾ËÀÌ »ý¼ºµÇ¾úÀ» ¶§ ¾î¶² Ãæµ¹Ã¼ ¿ÀºêÁ§Æ®¿Í ÀÌ¹Ì °ãÄ£ »óÅÂÀÏ ¶§
+        // ì´ì•Œì´ ìƒì„±ë˜ì—ˆì„ ë•Œ ì–´ë–¤ ì¶©ëŒì²´ ì˜¤ë¸Œì íŠ¸ì™€ ì´ë¯¸ ê²¹ì¹œ ìƒíƒœì¼ ë•Œ
         if(initialCollisions.Length > 0)
         {
-            OnHitObject(initialCollisions[0]);
+            OnHitObject(initialCollisions[0], transform.position);
         }
     }
 
@@ -47,27 +47,16 @@ public class Projectile : MonoBehaviour
 
         if(Physics.Raycast(ray, out hit, moveDistance + skinWidth, collisionMask, QueryTriggerInteraction.Collide))
         {
-            OnHitObject(hit);
+            OnHitObject(hit.collider, hit.point);
         }
-    }
+    }   
 
-    void OnHitObject(RaycastHit hit)
-    {
-        IDamageable damageableObject = hit.collider.GetComponent <IDamageable>();
-        if(damageableObject != null)
-        {
-            damageableObject.TakeHit(damage, hit); 
-        }
-
-        Destroy(gameObject);
-    }
-
-    void OnHitObject(Collider c)
+    void OnHitObject(Collider c, Vector3 hitPoint)
     {
         IDamageable damageableObject = c.GetComponent<IDamageable>();
         if (damageableObject != null)
         {
-            damageableObject.TakeDamage(damage);
+            damageableObject.TakeHit(damage, hitPoint, transform.forward);
         }
 
         Destroy(gameObject);

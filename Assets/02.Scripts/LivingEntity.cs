@@ -15,12 +15,12 @@ public class LivingEntity : MonoBehaviour, IDamageable
         health = startinhHealth;
     }
 
-    public void TakeHit(float damage, RaycastHit git)
+    public virtual void TakeHit(float damage, Vector3 hitPoint, Vector3 hitDirection)
     {
         TakeDamage(damage);
     }
 
-    public void TakeDamage(float damage)
+    public virtual void TakeDamage(float damage)
     {
         health -= damage;
 

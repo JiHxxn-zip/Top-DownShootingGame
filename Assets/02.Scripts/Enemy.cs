@@ -12,6 +12,9 @@ public class Enemy : LivingEntity
 
     private State currentState;
 
+    [Header("[Death Effect]")]
+    [SerializeField] private ParticleSystem deathEffect;
+
     private NavMeshAgent pathfinder;
 
     private Transform target;
@@ -23,23 +26,23 @@ public class Enemy : LivingEntity
     private Color originalColor;
 
 
-    // °ø°İÇÒ ¼ö ÀÖ´Â °Å¸® (1.5m)
+    // ê³µê²©í•  ìˆ˜ ìˆëŠ” ê±°ë¦¬ (1.5m)
     private float attackDistanceThreshold = 0.5f;
 
-    // °ø°İÇÒ ¼ö ÀÖ´Â ½Ã°£
+    // ê³µê²©í•  ìˆ˜ ìˆëŠ” ì‹œê°„
     private float timeBetweenAttacks = 1;
 
-    // ´ë¹ÌÁö
+    // ëŒ€ë¯¸ì§€
     private float damage = 1;
 
-    // ´ÙÀ½ °ø°İ °¡´É ½Ã°£
+    // ë‹¤ìŒ ê³µê²© ê°€ëŠ¥ ì‹œê°„
     private float nextAttackTime;
 
-    // ³ª¿Í Å¸°ÙÀÇ ¹İÁö¸§(°ø°İ½Ã °ãÄ§ ¹æÁö)
+    // ë‚˜ì™€ íƒ€ê²Ÿì˜ ë°˜ì§€ë¦„(ê³µê²©ì‹œ ê²¹ì¹¨ ë°©ì§€)
     private float myCollisionRadius;
     private float targetCollisionRadius;
 
-    // Å¸°Ù Á¸Àç¿©ºÎ
+    // íƒ€ê²Ÿ ì¡´ì¬ì—¬ë¶€
     bool hasTarget;
 
 
@@ -66,6 +69,16 @@ public class Enemy : LivingEntity
 
             StartCoroutine(UpdatePath());
         }
+    }
+
+    public override void TakeHit(float damage, Vector3 hitPoint, Vector3 hitDirection)
+    {
+        if(damage >= health)
+        {
+            Destroy(Instantiate(deathEffect.gameObject, hitPoint, Quaternion.FromToRotation(Vector3.forward, hitDirection))as GameObject ,deathEffect.startLifetime);
+        }
+
+        base.TakeHit(damage, hitPoint, hitDirection);
     }
 
     private void OnTargetDeath()
@@ -108,7 +121,7 @@ public class Enemy : LivingEntity
 
         skinMaterial.color = Color.red;
 
-        // ´ë¹ÌÁö¸¦ Àû¿ëÇÏ´Â µµÁßÀÎ°¡
+        // ëŒ€ë¯¸ì§€ë¥¼ ì ìš©í•˜ëŠ” ë„ì¤‘ì¸ê°€
         bool hasAppliedDamage = false;
 
         while (percent <= 1)
