@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5cf041b571d9ef42a5c2a07cf5e3a30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireMode: 2
+  fireMode: 1
   projectileSpawn:
   - {fileID: 1173112659853945752}
   - {fileID: 3353325064545126241}
@@ -59,7 +59,7 @@ MonoBehaviour:
   projectile: {fileID: 6224103561572951031, guid: e531e24a105d69048aa7db50ff0298fb, type: 3}
   msBetweenShots: 100
   muzzleVelocity: 35
-  burstCount: 0
+  burstCount: 3
   shell: {fileID: 3441243241840647462, guid: 20d422bbf494ad349a67bcd22b20a704, type: 3}
   shellEjection: {fileID: 8622192648459987937}
   muzzleflash: {fileID: 4797456779654595920}

@@ -1,12 +1,16 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
+    [Header("[개발자 모드]")]
+    [SerializeField] private bool isDevMode;
+
+    [Header("[Wave Info(Enemy)]")]
     [SerializeField] private Wave[] waves;
 
+    [Header("[Enemy Prefab]")]
     [SerializeField] private Enemy enemy;
 
     // 플레이어 정보
@@ -72,12 +76,28 @@ public class Spawner : MonoBehaviour
                 campPositionOld = playerT.position;
             }
 
-            if (enemyiesRemainingToSpawn > 0 && Time.time > nextSpawnTime)
+            if ((enemyiesRemainingToSpawn > 0 || currentWaves.infinite)&& Time.time > nextSpawnTime)
             {
                 enemyiesRemainingToSpawn--;
                 nextSpawnTime = Time.time + currentWaves.timeBetweenSpawns;
 
                 StartCoroutine(SpawnEnemy());
+            }
+        }
+
+        // 개발자 모드
+        if(isDevMode)
+        {
+            if(Input.GetKeyDown(KeyCode.Escape))
+            {
+                StopCoroutine("SpawnEnemy");
+
+                foreach (Enemy enemy in FindObjectsOfType<Enemy>()) 
+                {
+                    GameObject.Destroy(enemy.gameObject);
+                }
+
+                NextWave();
             }
         }
     }
@@ -109,6 +129,7 @@ public class Spawner : MonoBehaviour
 
         Enemy spawnedEnemy = Instantiate(enemy, randomtile.position + Vector3.up, Quaternion.identity) as Enemy;
         spawnedEnemy.OnDeath += OnEnemyDeath;
+        spawnedEnemy.SetCharacteristics(currentWaves.moveSpeed, currentWaves.hitToKillPlayer, currentWaves.enemyHealth, currentWaves.skinColor);
     }
 
     private void OnPlayerDeath()
@@ -155,8 +176,14 @@ public class Spawner : MonoBehaviour
     [Serializable]
     public class Wave
     {
+        public bool infinite;           // 무한 웨이브
         public int enemyCount;          // 적의 수
         public float timeBetweenSpawns; // 스폰 간격
+
+        public float moveSpeed;         // 적의 속도
+        public int hitToKillPlayer;     // 플레이어를 죽이기 위한 Hit 갯수
+        public float enemyHealth;       // 적의 에너지
+        public Color skinColor;         // 웨이브마다의 적의 색
     }
 
 

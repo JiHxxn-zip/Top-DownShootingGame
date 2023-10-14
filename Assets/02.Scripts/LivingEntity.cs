@@ -4,6 +4,8 @@ public class LivingEntity : MonoBehaviour, IDamageable
 {
     [Header("[Health]")]
     [SerializeField] private float startinhHealth;
+    public float StartinhHealth { get { return startinhHealth; } set { startinhHealth = value; } }
+    
 
     protected float health;
     protected bool isDead;

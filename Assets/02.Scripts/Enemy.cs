@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -46,29 +47,50 @@ public class Enemy : LivingEntity
     bool hasTarget;
 
 
-    protected override void Start()
+    private void Awake()
     {
-        base.Start();
-
         pathfinder = GetComponent<NavMeshAgent>();
 
-        skinMaterial = GetComponent<Renderer>().material;
-        originalColor = skinMaterial.color;
-
-        if(GameObject.FindGameObjectWithTag("Player") != null)
+        if (GameObject.FindGameObjectWithTag("Player") != null)
         {
-            currentState = State.Chasing;
             hasTarget = true;
 
             target = GameObject.FindGameObjectWithTag("Player").transform;
             targetEntity = target.GetComponent<LivingEntity>();
-            targetEntity.OnDeath += OnTargetDeath;
 
             myCollisionRadius = GetComponent<CapsuleCollider>().radius;
             targetCollisionRadius = target.GetComponent<CapsuleCollider>().radius;
+        }
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+         
+        if(hasTarget)
+        {
+            currentState = State.Chasing;
+            targetEntity.OnDeath += OnTargetDeath;
 
             StartCoroutine(UpdatePath());
         }
+    }
+
+    public void SetCharacteristics(float moveSpeed, int hitToKillPlayer, float enemyHealth, Color skinColor)
+    {
+        pathfinder.speed = moveSpeed;
+
+        // 플레이어를 죽이는데 필요한 hit 수 (반올림)
+        if(hasTarget)
+        {
+            damage = Mathf.Ceil(targetEntity.StartinhHealth / hitToKillPlayer);
+        }
+
+        StartinhHealth = enemyHealth;
+
+        skinMaterial = GetComponent<Renderer>().material;
+        skinMaterial.color = skinColor;
+        originalColor = skinMaterial.color;
     }
 
     public override void TakeHit(float damage, Vector3 hitPoint, Vector3 hitDirection)

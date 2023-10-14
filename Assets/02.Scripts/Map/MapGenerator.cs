@@ -13,6 +13,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private Vector2 maxMapSize;
 
     [Header("[NavMashFloor]")]
+    [SerializeField] private Transform mapFloor;
     [SerializeField] private Transform navmashFloor;
     [SerializeField] private Transform navmeshMaskPrefab;
 
@@ -51,7 +52,6 @@ public class MapGenerator : MonoBehaviour
         currentMap = maps[mapIndex];
         tileMap = new Transform[currentMap.mapSize.x, currentMap.mapSize.y];
         System.Random prng = new System.Random(currentMap.seed);
-        GetComponent<BoxCollider>().size = new Vector3(currentMap.mapSize.x * tileSize, 0.05f, currentMap.mapSize.y * tileSize);
 
         // 좌표(Coord) 생성
         allTileCoords = new List<Coord>();
@@ -153,6 +153,7 @@ public class MapGenerator : MonoBehaviour
 
 
         navmashFloor.localScale = new Vector3(maxMapSize.x, maxMapSize.y) * tileSize;
+        mapFloor.localScale = new Vector3(currentMap.mapSize.x * tileSize, currentMap.mapSize.y * tileSize);
     }
 
     /// <summary>
