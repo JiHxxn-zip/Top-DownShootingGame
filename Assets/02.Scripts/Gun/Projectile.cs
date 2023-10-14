@@ -6,6 +6,9 @@ public class Projectile : MonoBehaviour
 {
     [SerializeField] private LayerMask collisionMask;
 
+    [Header("트레일 컬러")]
+    [SerializeField] private Color trailColor;
+
     private float speed = 10;
     private float damage = 1;
 
@@ -25,6 +28,9 @@ public class Projectile : MonoBehaviour
         {
             OnHitObject(initialCollisions[0], transform.position);
         }
+
+        // 트레일 컬러 Set
+        GetComponent<TrailRenderer>().material.SetColor("_TintColor", trailColor);
     }
 
     public void SetSpeed(float newSpeed)

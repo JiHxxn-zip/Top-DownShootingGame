@@ -47,10 +47,16 @@ public class Player : LivingEntity
             controller.LookAt(point);
         }
 
-        //
+        // 방아쇠는 눌렀을 때
         if (Input.GetMouseButton(0))
         {
-            gunController.Shoot();
+            gunController.OnTriggerHold();
+        }
+
+        // 방아쇠를 놓았을 때
+        if (Input.GetMouseButtonUp(0))
+        {
+            gunController.OnTriggerRelease();
         }
     }
 }
